@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 
 // ─── Risk Level Helpers ──────────────────────────────────
 function getRiskLevel(score) {
-  if (score <= 25) return { label: 'Safe', color: 'emerald', icon: '✅', gradient: 'from-emerald-500 to-green-400', textColor: 'text-emerald-400', bgClass: 'severity-low' };
-  if (score <= 50) return { label: 'Warning', color: 'amber', icon: '⚠️', gradient: 'from-amber-500 to-yellow-400', textColor: 'text-amber-400', bgClass: 'severity-medium' };
-  if (score <= 75) return { label: 'High Risk', color: 'orange', icon: '🔶', gradient: 'from-orange-500 to-red-400', textColor: 'text-orange-400', bgClass: 'severity-high' };
-  return { label: 'Critical', color: 'red', icon: '🚨', gradient: 'from-red-600 to-rose-500', textColor: 'text-red-400', bgClass: 'severity-critical' };
+  if (score <= 25) return { label: 'Safe', color: 'emerald', icon: 'bi bi-shield-fill-check', gradient: 'from-emerald-500 to-green-400', textColor: 'text-emerald-400', bgClass: 'severity-low' };
+  if (score <= 50) return { label: 'Warning', color: 'amber', icon: 'bi bi-exclamation-triangle-fill', gradient: 'from-amber-500 to-yellow-400', textColor: 'text-amber-400', bgClass: 'severity-medium' };
+  if (score <= 75) return { label: 'High Risk', color: 'orange', icon: 'bi bi-exclamation-octagon-fill', gradient: 'from-orange-500 to-red-400', textColor: 'text-orange-400', bgClass: 'severity-high' };
+  return { label: 'Critical', color: 'red', icon: 'bi bi-patch-exclamation-fill', gradient: 'from-red-600 to-rose-500', textColor: 'text-red-400', bgClass: 'severity-critical' };
 }
 
 function getSeverityClass(severity) {
@@ -100,10 +100,26 @@ export default function AnalysisReport({ result, onReset }) {
     ...(contractInfo.tokenSymbol && { 'Symbol': contractInfo.tokenSymbol }),
     ...(etherscanData.compiler && { 'Compiler': etherscanData.compiler }),
     ...(etherscanData.tokenSupply && etherscanData.tokenSupply !== 'N/A' && { 'Total Supply': etherscanData.tokenSupply }),
-    'Has Mint': contractInfo.hasMintFunction ? '⚠️ Yes' : '✅ No',
-    'Has Pause': contractInfo.hasPauseFunction ? '⚠️ Yes' : '✅ No',
-    'Has Blacklist': contractInfo.hasBlacklist ? '⚠️ Yes' : '✅ No',
-    'Proxy Contract': contractInfo.hasProxy ? '⚠️ Yes' : '✅ No',
+    'Has Mint': contractInfo.hasMintFunction ? (
+      <span className="text-amber-400 flex items-center gap-1.5"><i className="bi bi-exclamation-triangle-fill"></i> Yes</span>
+    ) : (
+      <span className="text-emerald-400 flex items-center gap-1.5"><i className="bi bi-check-circle-fill"></i> No</span>
+    ),
+    'Has Pause': contractInfo.hasPauseFunction ? (
+      <span className="text-amber-400 flex items-center gap-1.5"><i className="bi bi-exclamation-triangle-fill"></i> Yes</span>
+    ) : (
+      <span className="text-emerald-400 flex items-center gap-1.5"><i className="bi bi-check-circle-fill"></i> No</span>
+    ),
+    'Has Blacklist': contractInfo.hasBlacklist ? (
+      <span className="text-amber-400 flex items-center gap-1.5"><i className="bi bi-exclamation-triangle-fill"></i> Yes</span>
+    ) : (
+      <span className="text-emerald-400 flex items-center gap-1.5"><i className="bi bi-check-circle-fill"></i> No</span>
+    ),
+    'Proxy Contract': contractInfo.hasProxy ? (
+      <span className="text-amber-400 flex items-center gap-1.5"><i className="bi bi-exclamation-triangle-fill"></i> Yes</span>
+    ) : (
+      <span className="text-emerald-400 flex items-center gap-1.5"><i className="bi bi-check-circle-fill"></i> No</span>
+    ),
   };
 
   return (
@@ -132,8 +148,8 @@ export default function AnalysisReport({ result, onReset }) {
           </div>
 
           {/* Risk label */}
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="text-2xl">{risk.icon}</span>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <i className={`text-3xl ${risk.icon}`}></i>
             <span className={`text-2xl font-bold ${risk.textColor}`}>{risk.label}</span>
           </div>
 
@@ -173,7 +189,9 @@ export default function AnalysisReport({ result, onReset }) {
             {Object.entries(displayInfo).map(([key, value]) => (
               <div key={key} className="glass-card rounded-xl p-4">
                 <p className="text-[10px] uppercase tracking-widest text-slate-500 mb-1 font-medium">{key}</p>
-                <p className="text-sm text-white font-semibold truncate" title={String(value)}>{String(value) || '—'}</p>
+                <div className="text-sm text-white font-semibold truncate" title={typeof value === 'string' ? value : ''}>
+                  {value || '—'}
+                </div>
               </div>
             ))}
           </div>

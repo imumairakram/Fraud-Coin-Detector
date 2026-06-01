@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
 const phases = [
-  { text: 'Connecting to blockchain...', icon: '🔗' },
-  { text: 'Fetching contract data...', icon: '📡' },
-  { text: 'Decompiling bytecode...', icon: '🔬' },
-  { text: 'AI agent analyzing code...', icon: '🧠' },
-  { text: 'Scanning for vulnerabilities...', icon: '🛡️' },
-  { text: 'Generating risk report...', icon: '📊' },
+  { text: 'Connecting to blockchain...', icon: 'bi bi-link-45deg text-cyan-400' },
+  { text: 'Fetching contract data...', icon: 'bi bi-broadcast text-violet-400' },
+  { text: 'Decompiling bytecode...', icon: 'bi bi-braces text-emerald-400' },
+  { text: 'AI agent analyzing code...', icon: 'bi bi-cpu text-violet-400' },
+  { text: 'Scanning for vulnerabilities...', icon: 'bi bi-shield-lock-fill text-amber-400' },
+  { text: 'Generating risk report...', icon: 'bi bi-bar-chart-fill text-emerald-400' },
 ];
 
 export default function Loader() {
@@ -49,8 +49,8 @@ export default function Loader() {
           
           {/* Center shield icon */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-5xl animate-float">
-              {phases[currentPhase].icon}
+            <div className="text-5xl animate-float flex items-center justify-center">
+              <i className={phases[currentPhase].icon}></i>
             </div>
           </div>
         </div>
