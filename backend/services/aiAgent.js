@@ -173,7 +173,7 @@ async function analyzeWithAI(contractData) {
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite',
       contents: userPrompt,
       config: {
         systemInstruction,
